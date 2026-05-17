@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aentho — Stop Losing Track Of Your Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Geist', 'SF Pro Display', system-ui, sans-serif;
+  background: #05070f;
+  color: #e2e8f0;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0c14; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+/* ═══════════════════════════════════════════════════════
+   CSS VARIABLES
+═══════════════════════════════════════════════════════ */
+:root {
+  --bg:        #05070f;
+  --bg2:       #080b16;
+  --bg3:       #0d1120;
+  --surface:   #111827;
+  --surface2:  #161e2e;
+  --border:    rgba(255,255,255,.07);
+  --border2:   rgba(255,255,255,.12);
+  --accent:    #2563eb;
+  --accent2:   #3b82f6;
+  --accent3:   #60a5fa;
+  --violet:    #7c3aed;
+  --violet2:   #8b5cf6;
+  --green:     #10b981;
+  --green2:    #34d399;
+  --amber:     #f59e0b;
+  --red:       #ef4444;
+  --text:      #f1f5f9;
+  --sub:       #94a3b8;
+  --muted:     #475569;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body:    'Geist', sans-serif;
+  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px;
+  --shadow-glow: 0 0 60px rgba(37,99,235,.18), 0 0 120px rgba(124,58,237,.08);
+  --shadow-card: 0 4px 32px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.05) inset;
+  --shadow-float: 0 24px 80px rgba(0,0,0,.6), 0 8px 32px rgba(37,99,235,.12);
+}
+
+/* ═══════════════════════════════════════════════════════
+   BACKGROUND EFFECTS
+═══════════════════════════════════════════════════════ */
+.bg-mesh {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(37,99,235,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,58,237,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(16,185,129,.04) 0%, transparent 50%);
+}
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(16px, 5vw, 64px);
+  background: rgba(5,7,15,.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  transition: background .3s;
+}
+nav.scrolled { background: rgba(5,7,15,.95); }
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-size: 22px; font-weight: 800;
+  letter-spacing: -.5px; color: var(--text); text-decoration: none;
+}
+.nav-logo-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: white; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(37,99,235,.4);
+}
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+  padding: 7px 14px; border-radius: 8px;
+  font-size: 14px; font-weight: 500; color: var(--sub);
+  text-decoration: none; transition: all .18s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+.nav-cta {
+  padding: 9px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white; text-decoration: none; border: none; cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(37,99,235,.3);
+  transition: all .2s;
+}
+.nav-cta:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(37,99,235,.4); }
+
+.hamburger {
+  display: none; background: none; border: 1.5px solid var(--border2);
+  border-radius: 8px; padding: 7px 10px; cursor: pointer; color: var(--sub); font-size: 18px;
+}
+.mobile-menu {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(5,7,15,.98); backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+  padding: 80px 32px 40px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--font-display); font-size: 28px; font-weight: 700;
+  color: var(--text); text-decoration: none; opacity: 0;
+  animation: menuItemIn .4s forwards;
+}
+.mobile-menu a:nth-child(1){animation-delay:.05s}
+.mobile-menu a:nth-child(2){animation-delay:.1s}
+.mobile-menu a:nth-child(3){animation-delay:.15s}
+.mobile-menu a:nth-child(4){animation-delay:.2s}
+.mobile-menu a:nth-child(5){animation-delay:.25s}
+@keyframes menuItemIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(16px); } }
+.menu-close {
+  position: absolute; top: 20px; right: 24px;
+  background: none; border: none; color: var(--sub); font-size: 28px; cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════════════ */
+section { position: relative; z-index: 2; }
+.container { max-width: 1160px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 48px); }
+
+/* ═══════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════ */
+#home {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 120px 0 80px;
+}
+.hero-inner { text-align: center; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.25);
+  border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase;
+  color: var(--accent3);
+  animation: fadeUp .8s .1s both;
+}
+.hero-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 8px var(--accent); }
+
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 7vw, 84px);
+  font-weight: 800; line-height: 1.06;
+  letter-spacing: -2.5px;
+  color: var(--text);
+  margin-bottom: 22px;
+  animation: fadeUp .9s .2s both;
+}
+.hero-h1 .grad {
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #34d399 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2.2vw, 20px);
+  color: var(--sub); max-width: 600px; margin: 0 auto 40px;
+  line-height: 1.7; font-weight: 400;
+  animation: fadeUp .9s .35s both;
+}
+
+.hero-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 80px;
+  animation: fadeUp .9s .5s both;
+}
+.btn-primary {
+  padding: 14px 30px; border-radius: 12px; font-size: 15px; font-weight: 700;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: white; border: none; cursor: pointer; font-family: inherit;
+  box-shadow: 0 8px 28px rgba(37,99,235,.4);
+  transition: all .25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,99,235,.5); filter: brightness(1.08); }
+.btn-ghost {
+  padding: 14px 30px; border-radius: 12px; font-size: 15px; font-weight: 600;
+  background: rgba(255,255,255,.05); border: 1.5px solid var(--border2);
+  color: var(--text); cursor: pointer; font-family: inherit;
+  transition: all .25s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════════════════
+   DEVICE MOCKUPS
+═══════════════════════════════════════════════════════ */
+.mockup-stage {
+  position: relative; display: flex; align-items: flex-end;
+  justify-content: center; gap: 0;
+  height: clamp(360px, 52vw, 640px);
+  animation: fadeUp 1s .65s both;
+  filter: drop-shadow(0 40px 80px rgba(37,99,235,.15));
+}
+
+/* LAPTOP */
+.laptop-wrap {
+  position: relative; z-index: 2;
+  transform: perspective(1200px) rotateY(4deg) rotateX(2deg);
+  transition: transform .6s cubic-bezier(.16,1,.3,1);
+}
+.laptop-wrap:hover { transform: perspective(1200px) rotateY(0deg) rotateX(0deg); }
+
+.laptop {
+  width: clamp(380px, 55vw, 680px);
+  background: #1a1d2e;
+  border-radius: 16px 16px 0 0;
+  border: 2px solid #2a2d3e;
+  box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,.06) inset;
+  overflow: hidden;
+}
+.laptop-bezel {
+  background: #141622; padding: 10px;
+  border-bottom: 1px solid #222535;
+  display: flex; align-items: center; gap: 6px;
+}
+.lb-dot { width: 10px; height: 10px; border-radius: 50%; }
+.lb-dot.r { background: #ef4444; } .lb-dot.y { background: #f59e0b; } .lb-dot.g { background: #10b981; }
+.laptop-screen {
+  width: 100%; background: #080b16;
+  aspect-ratio: 16/9.5; overflow: hidden;
+  display: flex;
+}
+.laptop-base {
+  width: clamp(420px, 62vw, 760px); height: 18px;
+  background: linear-gradient(180deg, #1e2030, #151725);
+  border-radius: 0 0 8px 8px;
+  border: 2px solid #2a2d3e; border-top: none;
+  position: relative; margin: 0 auto;
+}
+.laptop-base::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  width: 40%; height: 6px; background: #0f111a; border-radius: 0 0 4px 4px;
+}
+
+/* Phone */
+.phone-wrap {
+  position: absolute; right: -20px; bottom: 18px; z-index: 3;
+  transform: perspective(800px) rotateY(-6deg) rotateX(2deg);
+  transition: transform .6s cubic-bezier(.16,1,.3,1);
+}
+.phone-wrap:hover { transform: perspective(800px) rotateY(0deg) rotateX(0deg); }
+
+.phone {
+  width: clamp(120px, 14vw, 170px);
+  background: #1a1d2e;
+  border-radius: 28px;
+  border: 2px solid #2a2d3e;
+  padding: 10px 8px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06) inset,
+              0 0 40px rgba(37,99,235,.1);
+}
+.phone-notch {
+  width: 50px; height: 8px; background: #0d1020; border-radius: 4px;
+  margin: 0 auto 8px;
+}
+.phone-screen {
+  background: #080b16; border-radius: 18px; overflow: hidden;
+  aspect-ratio: 9/18;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MINI DASHBOARD (inside laptop)
+═══════════════════════════════════════════════════════ */
+.dash-ui {
+  display: flex; width: 100%; height: 100%; font-size: 0;
+}
+.dash-sidebar {
+  width: 23%; background: #0d1120; border-right: 1px solid rgba(255,255,255,.06);
+  padding: 10px 0; display: flex; flex-direction: column; gap: 1px;
+}
+.ds-logo {
+  display: flex; align-items: center; gap: 5px; padding: 5px 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.06); margin-bottom: 6px;
+}
+.ds-lm {
+  width: 18px; height: 18px; border-radius: 5px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; color: white; flex-shrink: 0;
+}
+.ds-name { font-size: 9px !important; font-weight: 800; color: #f1f5f9; font-family: 'Bricolage Grotesque', sans-serif; }
+.ds-nav {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 8px; margin: 0 4px; border-radius: 5px;
+  font-size: 8px !important; color: #64748b; font-family: 'Geist', sans-serif; font-weight: 500;
+}
+.ds-nav.active { background: rgba(37,99,235,.15); color: #60a5fa; }
+.ds-nav span:first-child { font-size: 9px !important; }
+
+.dash-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.dm-topbar {
+  height: 24px; background: #0d1120; border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 10px;
+}
+.dm-title { font-size: 9px !important; font-weight: 700; color: #f1f5f9; font-family: 'Bricolage Grotesque', sans-serif; }
+.dm-avatar { width: 14px; height: 14px; border-radius: 4px; background: linear-gradient(135deg, #2563eb, #7c3aed); }
+
+.dm-content { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+
+.dm-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
+.dm-kpi {
+  padding: 5px 6px; border-radius: 6px;
+  background: #111827; border: 1px solid rgba(255,255,255,.07);
+}
+.dm-kpi-label { font-size: 6px !important; color: #475569; font-family: 'Geist', sans-serif; text-transform: uppercase; letter-spacing: .5px; }
+.dm-kpi-val { font-size: 9px !important; font-weight: 800; font-family: 'Bricolage Grotesque', sans-serif; margin-top: 2px; }
+.dm-kpi-val.blue { color: #60a5fa; } .dm-kpi-val.green { color: #34d399; } .dm-kpi-val.amber { color: #fcd34d; } .dm-kpi-val.violet { color: #a78bfa; }
+
+.dm-charts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 5px; }
+.dm-chart-card {
+  padding: 6px; border-radius: 7px;
+  background: #111827; border: 1px solid rgba(255,255,255,.07);
+}
+.dm-chart-title { font-size: 7px !important; font-weight: 700; color: #94a3b8; font-family: 'Bricolage Grotesque', sans-serif; margin-bottom: 4px; }
+
+/* Mini bar chart */
+.mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 36px; }
+.mini-bar { flex: 1; border-radius: 2px 2px 0 0; background: #1e293b; position: relative; overflow: hidden; }
+.mini-bar::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.mini-bar.b1::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 65%; top: auto; }
+.mini-bar.b2::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 80%; top: auto; }
+.mini-bar.b3::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 55%; top: auto; }
+.mini-bar.b4::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 90%; top: auto; }
+.mini-bar.b5::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 70%; top: auto; }
+.mini-bar.b6::after { background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.3)); height: 100%; top: auto; }
+
+/* Mini donut */
+.mini-donut-wrap { display: flex; align-items: center; gap: 5px; }
+.mini-legend { display: flex; flex-direction: column; gap: 3px; }
+.mini-legend-row { display: flex; align-items: center; gap: 4px; font-size: 6px !important; color: #64748b; font-family: 'Geist', sans-serif; }
+.mini-legend-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+.dm-products { background: #111827; border: 1px solid rgba(255,255,255,.07); border-radius: 7px; padding: 5px 6px; }
+.dm-prod-title { font-size: 7px !important; font-weight: 700; color: #94a3b8; font-family: 'Bricolage Grotesque', sans-serif; margin-bottom: 4px; }
+.dm-prod-row { display: flex; align-items: center; gap: 5px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.dm-prod-row:last-child { border-bottom: none; }
+.dm-prod-emoji { font-size: 10px !important; }
+.dm-prod-name { font-size: 7px !important; color: #cbd5e1; font-family: 'Geist', sans-serif; flex: 1; }
+.dm-prod-price { font-size: 7px !important; color: #60a5fa; font-weight: 600; font-family: 'Geist', sans-serif; }
+
+.dm-actions { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
+.dm-action {
+  padding: 5px 3px; border-radius: 6px; text-align: center;
+  background: #111827; border: 1px solid rgba(255,255,255,.07);
+  font-size: 6px !important; color: #64748b; font-family: 'Geist', sans-serif; font-weight: 500;
+}
+.dm-action span { display: block; font-size: 10px !important; margin-bottom: 2px; }
+
+/* ═══════════════════════════════════════════════════════
+   PHONE SCREEN UI
+═══════════════════════════════════════════════════════ */
+.phone-ui {
+  padding: 6px; display: flex; flex-direction: column; gap: 4px;
+  background: #080b16; height: 100%;
+}
+.ph-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2px 2px 4px;
+}
+.ph-title { font-size: 8px !important; font-weight: 800; color: #f1f5f9; font-family: 'Bricolage Grotesque', sans-serif; }
+.ph-avatar { width: 12px; height: 12px; border-radius: 3px; background: linear-gradient(135deg, #2563eb, #7c3aed); }
+
+.ph-kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.ph-kpi {
+  padding: 5px; border-radius: 6px;
+  background: #111827; border: 1px solid rgba(255,255,255,.07);
+}
+.ph-kpi-label { font-size: 5px !important; color: #475569; text-transform: uppercase; letter-spacing: .5px; font-family: 'Geist', sans-serif; }
+.ph-kpi-val { font-size: 9px !important; font-weight: 800; font-family: 'Bricolage Grotesque', sans-serif; margin-top: 1px; }
+
+.ph-chart-card { background: #111827; border: 1px solid rgba(255,255,255,.07); border-radius: 6px; padding: 5px; }
+.ph-chart-title { font-size: 6px !important; font-weight: 700; color: #94a3b8; font-family: 'Bricolage Grotesque', sans-serif; margin-bottom: 3px; }
+.ph-bars { display: flex; align-items: flex-end; gap: 2px; height: 28px; }
+.ph-bar { flex: 1; border-radius: 1px 1px 0 0; background: rgba(59,130,246,.3); }
+.ph-bar.h100 { height: 100%; background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+.ph-bar.h80  { height: 80%;  background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+.ph-bar.h60  { height: 60%;  background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+.ph-bar.h90  { height: 90%;  background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+.ph-bar.h70  { height: 70%;  background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+.ph-bar.h50  { height: 50%;  background: linear-gradient(180deg,#3b82f6,rgba(59,130,246,.5)); }
+
+.ph-recent { background: #111827; border: 1px solid rgba(255,255,255,.07); border-radius: 6px; padding: 5px; }
+.ph-recent-title { font-size: 6px !important; font-weight: 700; color: #94a3b8; font-family: 'Bricolage Grotesque', sans-serif; margin-bottom: 4px; }
+.ph-sale-row { display: flex; align-items: center; gap: 4px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.ph-sale-row:last-child { border-bottom: none; }
+.ph-sale-emoji { font-size: 9px !important; }
+.ph-sale-name { font-size: 6px !important; color: #cbd5e1; font-family: 'Geist', sans-serif; flex: 1; }
+.ph-sale-amt { font-size: 6px !important; color: #34d399; font-weight: 600; font-family: 'Geist', sans-serif; }
+
+/* ═══════════════════════════════════════════════════════
+   GLOW RINGS BEHIND MOCKUPS
+═══════════════════════════════════════════════════════ */
+.mockup-glow {
+  position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+  width: 80%; height: 200px; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(37,99,235,.18) 0%, transparent 70%);
+  filter: blur(20px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SECTION DIVIDER
+═══════════════════════════════════════════════════════ */
+.divider {
+  height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  margin: 0 clamp(16px,5vw,80px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FEATURES SECTION
+═══════════════════════════════════════════════════════ */
+#features { padding: 100px 0; }
+.section-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 14px; display: block;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 52px);
+  font-weight: 800; letter-spacing: -1.5px; color: var(--text);
+  margin-bottom: 16px; line-height: 1.1;
+}
+.section-sub {
+  font-size: 17px; color: var(--sub); max-width: 520px; line-height: 1.7;
+}
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 60px;
+}
+@media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){.features-grid{grid-template-columns:1fr}}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  transition: all .3s;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.feature-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0;
+  background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(124,58,237,.05));
+  transition: opacity .3s;
+}
+.feature-card:hover { border-color: rgba(37,99,235,.3); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(37,99,235,.15); }
+.feature-card:hover::before { opacity: 1; }
+
+.feature-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 18px;
+  background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.15);
+  position: relative;
+}
+.feature-title {
+  font-family: var(--font-display); font-size: 17px; font-weight: 700;
+  color: var(--text); margin-bottom: 10px; letter-spacing: -.3px;
+}
+.feature-desc { font-size: 14px; color: var(--sub); line-height: 1.65; }
+
+/* ═══════════════════════════════════════════════════════
+   CUSTOMER STORIES
+═══════════════════════════════════════════════════════ */
+#customer-stories { padding: 100px 0; background: var(--bg2); }
+
+.stories-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 16px;
+  margin-top: 60px;
+}
+@media(max-width:700px){.stories-grid{grid-template-columns:1fr}}
+
+.story-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-card);
+  transition: all .3s;
+  position: relative;
+}
+.story-card::before {
+  content: '"';
+  position: absolute; top: 20px; right: 24px;
+  font-family: var(--font-display); font-size: 72px; font-weight: 800;
+  color: rgba(37,99,235,.12); line-height: 1;
+}
+.story-card:hover { border-color: rgba(37,99,235,.25); transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,.4); }
+
+.story-quote {
+  font-size: 17px; font-weight: 500; color: var(--text);
+  line-height: 1.6; margin-bottom: 20px; font-style: italic;
+}
+.story-author {
+  display: flex; align-items: center; gap: 12px;
+}
+.story-avatar {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.story-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.story-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.pain-strip {
+  margin-top: 60px;
+  background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(124,58,237,.06));
+  border: 1px solid rgba(37,99,235,.15);
+  border-radius: var(--r-lg);
+  padding: 40px;
+  text-align: center;
+}
+.pain-title {
+  font-family: var(--font-display); font-size: clamp(22px,3.5vw,36px);
+  font-weight: 800; letter-spacing: -1px; color: var(--text); margin-bottom: 12px;
+}
+.pain-sub { font-size: 16px; color: var(--sub); }
+
+/* ═══════════════════════════════════════════════════════
+   WAITING LIST
+═══════════════════════════════════════════════════════ */
+#waiting-list { padding: 100px 0; }
+.wl-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+}
+@media(max-width:860px){.wl-inner{grid-template-columns:1fr}}
+
+.wl-left { }
+.wl-perks { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+.wl-perk {
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.wl-perk-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.2);
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+.wl-perk-text { }
+.wl-perk-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.wl-perk-sub   { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+.wl-form-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: clamp(24px, 5vw, 40px);
+  box-shadow: var(--shadow-card);
+  position: sticky; top: 90px;
+}
+.form-title {
+  font-family: var(--font-display); font-size: 22px; font-weight: 800;
+  letter-spacing: -.5px; color: var(--text); margin-bottom: 6px;
+}
+.form-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 24px; }
+
+.form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.form-field label {
+  font-size: 11.5px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; color: var(--muted);
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 12px 15px; border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--bg3); color: var(--text);
+  font-family: inherit; font-size: 14px; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  resize: none;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+.form-field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--muted); }
+.form-field option { background: #111827; }
+
+.form-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:480px){.form-field-row{grid-template-columns:1fr}}
+
+.submit-btn {
+  width: 100%; padding: 15px;
+  border-radius: 14px; border: none;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: white; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  box-shadow: 0 8px 28px rgba(37,99,235,.4);
+  transition: all .25s; margin-top: 6px;
+  position: relative; overflow: hidden;
+}
+.submit-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.08), transparent);
+}
+.submit-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,99,235,.5); }
+.submit-btn:active { transform: none; }
+.submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.form-privacy { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 12px; }
+.form-success {
+  text-align: center; padding: 32px 20px;
+  animation: fadeUp .5s both;
+}
+.form-success .success-icon { font-size: 48px; margin-bottom: 12px; }
+.form-success-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--green2); margin-bottom: 8px; }
+.form-success-sub { font-size: 14px; color: var(--sub); }
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════════ */
+#about { padding: 100px 0; background: var(--bg2); }
+.about-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+@media(max-width:860px){.about-inner{grid-template-columns:1fr}}
+
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px;
+}
+.stat-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 22px;
+  box-shadow: var(--shadow-card);
+}
+.stat-num {
+  font-family: var(--font-display); font-size: 36px; font-weight: 800;
+  letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.about-right { }
+.about-text { font-size: 16px; color: var(--sub); line-height: 1.8; }
+.about-text + .about-text { margin-top: 16px; }
+.about-founder {
+  margin-top: 32px; display: flex; align-items: center; gap: 14px;
+  padding: 20px; border-radius: var(--r-md);
+  background: var(--surface2); border: 1px solid var(--border);
+}
+.founder-avatar {
+  width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 800; color: white;
+  font-family: var(--font-display);
+}
+.founder-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.founder-role { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+footer {
+  background: #030508;
+  border-top: 1px solid var(--border);
+  padding: 60px 0 36px;
+  position: relative; z-index: 2;
+}
+.footer-inner {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 40px; flex-wrap: wrap; margin-bottom: 48px;
+}
+.footer-brand { max-width: 280px; }
+.footer-tagline { font-size: 14px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 14px; color: var(--sub); text-decoration: none; transition: color .18s; }
+.footer-links a:hover { color: var(--text); }
+.footer-links h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 13px; color: var(--muted); }
+
+/* ═══════════════════════════════════════════════════════
+   SCROLL ANIMATIONS
+═══════════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes float {
+  0%,100% { transform: perspective(1200px) rotateY(4deg) rotateX(2deg) translateY(0px); }
+  50%      { transform: perspective(1200px) rotateY(4deg) rotateX(2deg) translateY(-8px); }
+}
+@keyframes floatPhone {
+  0%,100% { transform: perspective(800px) rotateY(-6deg) rotateX(2deg) translateY(0px); }
+  50%      { transform: perspective(800px) rotateY(-6deg) rotateX(2deg) translateY(-10px); }
+}
+
+.laptop-wrap { animation: float 6s ease-in-out infinite; }
+.phone-wrap  { animation: floatPhone 7s 1s ease-in-out infinite; }
+.laptop-wrap:hover { animation: none; }
+.phone-wrap:hover  { animation: none; }
+
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ═══════════════════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════════════════ */
+.text-center { text-align: center; }
+.mb-4  { margin-bottom: 16px; }
+.mb-8  { margin-bottom: 32px; }
+.mb-12 { margin-bottom: 48px; }
+.tag {
+  display: inline-block; padding: 4px 12px; border-radius: 100px;
+  background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.2);
+  font-size: 12px; font-weight: 600; color: var(--accent3);
+  letter-spacing: .5px;
+}
+
+/* Responsive nav */
+@media(max-width:768px) {
+  .nav-links { display: none; }
+  .nav-cta   { display: none; }
+  .hamburger { display: block; }
+  .mockup-stage { height: clamp(260px,60vw,400px); }
+  .phone-wrap { right: -10px; }
+}
+@media(max-width:480px) {
+  .phone-wrap { display: none; }
+}
+
+/* Gradient border trick */
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit;
+  background: linear-gradient(135deg, rgba(37,99,235,.5), rgba(124,58,237,.3), transparent 60%);
+  z-index: -1;
+}
+
+/* Counter badge */
+.spot-counter {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(16,185,129,.08); border: 1px solid rgba(16,185,129,.2);
+  border-radius: 100px; padding: 5px 14px; margin-bottom: 18px;
+  font-size: 12.5px; font-weight: 600; color: var(--green2);
+}
+.spot-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.9)} }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="grain"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">
+    <div class="nav-logo-mark">A</div>
+    Aentho
+  </a>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#features">Features</a>
+    <a href="#customer-stories">Customer Stories</a>
+    <a href="#waiting-list">Waiting List</a>
+    <a href="#about">About</a>
+  </div>
+  <a href="#waiting-list" class="nav-cta">Join Waiting List →</a>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="menu-close" onclick="toggleMenu()">✕</button>
+  <a href="#home" onclick="toggleMenu()">Home</a>
+  <a href="#features" onclick="toggleMenu()">Features</a>
+  <a href="#customer-stories" onclick="toggleMenu()">Customer Stories</a>
+  <a href="#waiting-list" onclick="toggleMenu()">Waiting List</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════ -->
+<section id="home">
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-badge">
+        <span></span>
+        Now in Early Access — Limited Spots
+      </div>
+
+      <h1 class="hero-h1">
+        Stop Losing Track<br>
+        <span class="grad">Of Your Business.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Aentho helps small businesses record sales quickly, track profit, understand growth, and never lose business information again.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#waiting-list" class="btn-primary">🚀 Join Waiting List</a>
+        <a href="#features" class="btn-ghost">▶ See How It Works</a>
+      </div>
+
+      <!-- ═══ DEVICE MOCKUPS ═══ -->
+      <div class="mockup-stage">
+
+        <!-- LAPTOP -->
+        <div class="laptop-wrap">
+          <div class="laptop">
+            <div class="laptop-bezel">
+              <div class="lb-dot r"></div>
+              <div class="lb-dot y"></div>
+              <div class="lb-dot g"></div>
+            </div>
+            <div class="laptop-screen">
+              <!-- FULL DASHBOARD UI -->
+              <div class="dash-ui">
+                <!-- Sidebar -->
+                <div class="dash-sidebar">
+                  <div class="ds-logo">
+                    <div class="ds-lm">A</div>
+                    <span class="ds-name">Aentho</span>
+                  </div>
+                  <div class="ds-nav active"><span>📊</span><span>Dashboard</span></div>
+                  <div class="ds-nav"><span>📦</span><span>Products</span></div>
+                  <div class="ds-nav"><span>📋</span><span>Sales History</span></div>
+                  <div class="ds-nav"><span>⚙️</span><span>Settings</span></div>
+                </div>
+                <!-- Main -->
+                <div class="dash-main">
+                  <div class="dm-topbar">
+                    <span class="dm-title">Dashboard</span>
+                    <div class="dm-avatar"></div>
+                  </div>
+                  <div class="dm-content">
+                    <!-- KPIs -->
+                    <div class="dm-kpis">
+                      <div class="dm-kpi">
+                        <div class="dm-kpi-label">Total Sales</div>
+                        <div class="dm-kpi-val blue">$4,820</div>
+                      </div>
+                      <div class="dm-kpi">
+                        <div class="dm-kpi-label">Total Profit</div>
+                        <div class="dm-kpi-val green">$1,240</div>
+                      </div>
+                      <div class="dm-kpi">
+                        <div class="dm-kpi-label">Orders</div>
+                        <div class="dm-kpi-val amber">32</div>
+                      </div>
+                      <div class="dm-kpi">
+                        <div class="dm-kpi-label">Products</div>
+                        <div class="dm-kpi-val violet">9</div>
+                      </div>
+                    </div>
+                    <!-- Charts -->
+                    <div class="dm-charts">
+                      <div class="dm-chart-card">
+                        <div class="dm-chart-title">Sales Overview</div>
+                        <div class="mini-bars">
+                          <div class="mini-bar b1"></div>
+                          <div class="mini-bar b2"></div>
+                          <div class="mini-bar b3"></div>
+                          <div class="mini-bar b4"></div>
+                          <div class="mini-bar b5"></div>
+                          <div class="mini-bar b6"></div>
+                          <div class="mini-bar b1"></div>
+                          <div class="mini-bar b4"></div>
+                        </div>
+                      </div>
+                      <div class="dm-chart-card">
+                        <div class="dm-chart-title">Most Sold Items</div>
+                        <div class="mini-donut-wrap">
+                          <svg width="44" height="44" viewBox="0 0 44 44">
+                            <circle cx="22" cy="22" r="17" fill="none" stroke="#1e293b" stroke-width="8"/>
+                            <circle cx="22" cy="22" r="17" fill="none" stroke="#2563eb" stroke-width="8" stroke-dasharray="38 69" transform="rotate(-90 22 22)"/>
+                            <circle cx="22" cy="22" r="17" fill="none" stroke="#10b981" stroke-width="8" stroke-dasharray="24 69" stroke-dashoffset="-38" transform="rotate(-90 22 22)"/>
+                            <circle cx="22" cy="22" r="17" fill="none" stroke="#f59e0b" stroke-width="8" stroke-dasharray="18 69" stroke-dashoffset="-62" transform="rotate(-90 22 22)"/>
+                            <circle cx="22" cy="22" r="6" fill="#080b16"/>
+                          </svg>
+                          <div class="mini-legend">
+                            <div class="mini-legend-row"><div class="mini-legend-dot" style="background:#2563eb"></div>Burger 34%</div>
+                            <div class="mini-legend-row"><div class="mini-legend-dot" style="background:#10b981"></div>Chicken 24%</div>
+                            <div class="mini-legend-row"><div class="mini-legend-dot" style="background:#f59e0b"></div>Pizza 20%</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Products -->
+                    <div class="dm-products">
+                      <div class="dm-prod-title">Top Products</div>
+                      <div class="dm-prod-row"><span class="dm-prod-emoji">🍔</span><span class="dm-prod-name">Burger</span><span class="dm-prod-price">$598</span></div>
+                      <div class="dm-prod-row"><span class="dm-prod-emoji">🍗</span><span class="dm-prod-name">Chicken Pack</span><span class="dm-prod-price">$419</span></div>
+                      <div class="dm-prod-row"><span class="dm-prod-emoji">🍕</span><span class="dm-prod-name">Pizza Slice</span><span class="dm-prod-price">$274</span></div>
+                      <div class="dm-prod-row"><span class="dm-prod-emoji">🍟</span><span class="dm-prod-name">Fries</span><span class="dm-prod-price">$195</span></div>
+                      <div class="dm-prod-row"><span class="dm-prod-emoji">🥤</span><span class="dm-prod-name">Cold Drink</span><span class="dm-prod-price">$106</span></div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div class="dm-actions">
+                      <div class="dm-action"><span>➕</span>Add Product</div>
+                      <div class="dm-action"><span>💸</span>Add Sale</div>
+                      <div class="dm-action"><span>📦</span>Inventory</div>
+                      <div class="dm-action"><span>📋</span>History</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="laptop-base"></div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-ui">
+                <div class="ph-topbar">
+                  <span class="ph-title">Aentho</span>
+                  <div class="ph-avatar"></div>
+                </div>
+                <div class="ph-kpi-grid">
+                  <div class="ph-kpi"><div class="ph-kpi-label">Total Sales</div><div class="ph-kpi-val" style="color:#60a5fa">$4,820</div></div>
+                  <div class="ph-kpi"><div class="ph-kpi-label">Profit</div><div class="ph-kpi-val" style="color:#34d399">$1,240</div></div>
+                  <div class="ph-kpi"><div class="ph-kpi-label">Orders</div><div class="ph-kpi-val" style="color:#fcd34d">32</div></div>
+                  <div class="ph-kpi"><div class="ph-kpi-label">Products</div><div class="ph-kpi-val" style="color:#a78bfa">9</div></div>
+                </div>
+                <div class="ph-chart-card">
+                  <div class="ph-chart-title">Sales Chart</div>
+                  <div class="ph-bars">
+                    <div class="ph-bar h60"></div>
+                    <div class="ph-bar h80"></div>
+                    <div class="ph-bar h50"></div>
+                    <div class="ph-bar h90"></div>
+                    <div class="ph-bar h70"></div>
+                    <div class="ph-bar h100"></div>
+                    <div class="ph-bar h80"></div>
+                  </div>
+                </div>
+                <div class="ph-recent">
+                  <div class="ph-recent-title">Recent Sales</div>
+                  <div class="ph-sale-row"><span class="ph-sale-emoji">🍔</span><span class="ph-sale-name">Burger ×3</span><span class="ph-sale-amt">+$14.97</span></div>
+                  <div class="ph-sale-row"><span class="ph-sale-emoji">🍟</span><span class="ph-sale-name">Fries ×5</span><span class="ph-sale-amt">+$12.45</span></div>
+                  <div class="ph-sale-row"><span class="ph-sale-emoji">🥤</span><span class="ph-sale-name">Cold Drink ×2</span><span class="ph-sale-amt">+$3.98</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mockup-glow"></div>
+      </div><!-- /mockup-stage -->
+
+    </div><!-- /hero-inner -->
+  </div><!-- /container -->
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     FEATURES
+═══════════════════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="section-eyebrow">Why Aentho</span>
+      <h2 class="section-title">Built For Real Businesses</h2>
+      <p class="section-sub" style="margin:0 auto">Everything a small business needs to stop guessing and start knowing their numbers.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" style="background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.2)">⚡</div>
+        <div class="feature-title">Record sales in seconds</div>
+        <div class="feature-desc">Tap, choose your product, enter quantity. Sale recorded. No complicated menus, no wasted time — faster than writing on paper.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2)">📱</div>
+        <div class="feature-title">Works on mobile and desktop</div>
+        <div class="feature-desc">Use your phone at the counter and your laptop at home. One app, same data, everywhere. Perfectly optimized for every screen size.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.2)">📊</div>
+        <div class="feature-title">Understand business growth instantly</div>
+        <div class="feature-desc">See your best products, daily revenue, and profit trends in beautiful visual charts — no spreadsheets, no accounting degree needed.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" style="background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.2)">🔒</div>
+        <div class="feature-title">Never lose business data again</div>
+        <div class="feature-desc">Your sales, stock levels, and records are stored safely and always available. No more lost notebooks or corrupted spreadsheet files.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.2)">😊</div>
+        <div class="feature-title">Product emojis for fast finding</div>
+        <div class="feature-desc">🍔 🍕 🥤 — find your product in one glance. No scrolling through long text lists. Built for busy people who don't have time to search.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2)">💡</div>
+        <div class="feature-title">Simple English everyone understands</div>
+        <div class="feature-desc">No finance jargon. No confusing terms. Every button and label is written in plain language that anyone on your team can understand immediately.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     CUSTOMER STORIES
+═══════════════════════════════════════════════════ -->
+<section id="customer-stories">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="section-eyebrow">Real Feedback</span>
+      <h2 class="section-title">What Business Owners Told Us</h2>
+      <p class="section-sub" style="margin:0 auto">We spoke to real small business owners. These are their exact words — and the problems Aentho was built to solve.</p>
+    </div>
+
+    <div class="stories-grid" style="margin-top:60px">
+
+      <div class="story-card reveal reveal-delay-1">
+        <div class="story-quote">"My notes always disappear. I write things on paper and then I can't find them the next day. I've lost so much information about my business."</div>
+        <div class="story-author">
+          <div class="story-avatar" style="background:rgba(37,99,235,.15)">🏪</div>
+          <div>
+            <div class="story-name">Small Shop Owner</div>
+            <div class="story-role">Retail goods business</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card reveal reveal-delay-2">
+        <div class="story-quote">"I put money in the bank but I genuinely don't know how much profit I actually make. I just hope it's enough at the end of the month."</div>
+        <div class="story-author">
+          <div class="story-avatar" style="background:rgba(16,185,129,.15)">💼</div>
+          <div>
+            <div class="story-name">Local Business Owner</div>
+            <div class="story-role">Wholesale & distribution</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card reveal reveal-delay-3">
+        <div class="story-quote">"I write all my sales on paper and then I lose track. By the end of the week I have no idea what sold or how much I made. It's stressful."</div>
+        <div class="story-author">
+          <div class="story-avatar" style="background:rgba(245,158,11,.15)">🍺</div>
+          <div>
+            <div class="story-name">Tavern Owner</div>
+            <div class="story-role">Food & beverages</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card reveal reveal-delay-4">
+        <div class="story-quote">"Tracking my business always feels stressful. I don't have time to learn complicated software. I just need something simple that works."</div>
+        <div class="story-author">
+          <div class="story-avatar" style="background:rgba(239,68,68,.15)">🍱</div>
+          <div>
+            <div class="story-name">Food Seller</div>
+            <div class="story-role">Street food & catering</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pain + Solution strip -->
+    <div class="pain-strip reveal" style="margin-top:60px">
+      <div class="pain-title">Aentho fixes all of this — in minutes.</div>
+      <p class="pain-sub">One app. All your sales, stock, and profit. Always in your pocket.</p>
+      <a href="#waiting-list" class="btn-primary" style="display:inline-flex;margin-top:24px">Get Early Access →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     WAITING LIST
+═══════════════════════════════════════════════════ -->
+<section id="waiting-list">
+  <div class="container">
+    <div class="wl-inner">
+
+      <!-- Left copy -->
+      <div class="wl-left reveal">
+        <span class="section-eyebrow">Early Access</span>
+        <h2 class="section-title">Join Early Access</h2>
+        <p class="section-sub">Be among the first businesses to use Aentho. Early access members get priority onboarding, free premium features, and direct input on the product.</p>
+
+        <div class="wl-perks">
+          <div class="wl-perk">
+            <div class="wl-perk-icon">🎯</div>
+            <div class="wl-perk-text">
+              <div class="wl-perk-title">Priority access</div>
+              <div class="wl-perk-sub">First in line when we launch publicly</div>
+            </div>
+          </div>
+          <div class="wl-perk">
+            <div class="wl-perk-icon">⭐</div>
+            <div class="wl-perk-text">
+              <div class="wl-perk-title">Free premium features</div>
+              <div class="wl-perk-sub">Early adopters unlock advanced analytics at no cost</div>
+            </div>
+          </div>
+          <div class="wl-perk">
+            <div class="wl-perk-icon">🤝</div>
+            <div class="wl-perk-text">
+              <div class="wl-perk-title">Shape the product</div>
+              <div class="wl-perk-sub">Your feedback directly influences what we build next</div>
+            </div>
+          </div>
+          <div class="wl-perk">
+            <div class="wl-perk-icon">💬</div>
+            <div class="wl-perk-text">
+              <div class="wl-perk-title">Direct support</div>
+              <div class="wl-perk-sub">Get personal onboarding from our founding team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right form -->
+      <div class="reveal reveal-delay-2">
+        <div class="wl-form-wrap glow-border">
+          <div class="spot-counter">
+            <span class="spot-dot"></span>
+            Spots filling up fast
+          </div>
+          <h3 class="form-title">Reserve My Spot</h3>
+          <p class="form-sub">Takes less than 60 seconds. No credit card needed.</p>
+
+          <!-- SUCCESS STATE (hidden by default) -->
+          <div class="form-success" id="formSuccess" style="display:none">
+            <div class="success-icon">🎉</div>
+            <div class="form-success-title">You're on the list!</div>
+            <p class="form-success-sub">We'll contact you directly before we launch. Welcome to Aentho early access!</p>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════
+               GOOGLE FORMS CONNECTION
+               ═══════════════════════════════════════════════════════════════
+               Your form URL:
+               https://docs.google.com/forms/d/e/1FAIpQLSfTIW8B7hg7-blZtjBvIupSwrpYRCHgjuJCTLzjQh82njIvUw/viewform
+
+               Your Google Form has 3 fields:
+                 1. Shop name
+                 2. Gmail
+                 3. What problems are you facing in your business
+
+               HOW TO GET YOUR ENTRY IDs (takes 30 seconds):
+               ─────────────────────────────────────────────
+               1. Open your form link in Chrome:
+                  https://docs.google.com/forms/d/e/1FAIpQLSfTIW8B7hg7-blZtjBvIupSwrpYRCHgjuJCTLzjQh82njIvUw/viewform
+
+               2. Right-click on the page → click "View Page Source"
+                  (or press Ctrl+U on Windows / Cmd+U on Mac)
+
+               3. Press Ctrl+F and search for:  entry.
+                  You will see 3 results like:
+                    entry.123456789   ← this is for "Shop name"
+                    entry.987654321   ← this is for "Gmail"
+                    entry.112233445   ← this is for "What problems..."
+
+               4. Copy each number and paste it below replacing:
+                    SHOPNAME_ENTRY_ID   → e.g. 123456789
+                    GMAIL_ENTRY_ID      → e.g. 987654321
+                    PROBLEMS_ENTRY_ID   → e.g. 112233445
+
+               The action URL is already hardcoded correctly below.
+               ═══════════════════════════════════════════════════════════════ -->
+
+          <form id="waitingListForm" onsubmit="submitForm(event)">
+
+            <!-- FIELD 1: Shop name → replace SHOPNAME_ENTRY_ID with the real number -->
+            <div class="form-field">
+              <label>Shop / Business Name *</label>
+              <input
+                type="text"
+                id="f-shopname"
+                name="entry.SHOPNAME_ENTRY_ID"
+                placeholder="e.g. Mama's Kitchen, John's Shop..."
+                required
+              />
+            </div>
+
+            <!-- FIELD 2: Gmail → replace GMAIL_ENTRY_ID with the real number -->
+            <div class="form-field">
+              <label>Gmail Address *</label>
+              <input
+                type="email"
+                id="f-gmail"
+                name="entry.GMAIL_ENTRY_ID"
+                placeholder="yourname@gmail.com"
+                required
+              />
+            </div>
+
+            <!-- FIELD 3: Problems → replace PROBLEMS_ENTRY_ID with the real number -->
+            <div class="form-field">
+              <label>What problems are you facing in your business? *</label>
+              <textarea
+                id="f-problems"
+                name="entry.PROBLEMS_ENTRY_ID"
+                rows="4"
+                placeholder="e.g. I write sales on paper and always lose track. I don't know my profit at the end of the day..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              🚀 Reserve My Spot — It's Free
+            </button>
+            <p class="form-privacy">🔒 Your information goes directly to our Google Sheet. No spam, ever.</p>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-inner">
+
+      <div class="reveal">
+        <span class="section-eyebrow">About Aentho</span>
+        <h2 class="section-title" style="max-width:380px">Built from real conversations with real businesses</h2>
+
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Business owners interviewed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4+</div>
+            <div class="stat-label">Months of research & building</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Built for small businesses</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">For early access members</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <p class="about-text">Aentho was born from frustration. We watched too many hardworking business owners lose money, lose records, and feel stressed about something that should be simple.</p>
+        <p class="about-text">We spent months talking to shop owners, food sellers, tavern owners, and traders. We asked one question: <em style="color:var(--text)">"What's the biggest problem tracking your business?"</em></p>
+        <p class="about-text">The answers were always the same — lost notes, unknown profit, and no time to learn complicated software. So we built Aentho: the simplest, most powerful business tracker for everyday businesses.</p>
+
+        <div class="about-founder">
+          <div class="founder-avatar">A</div>
+          <div>
+            <div class="founder-name">The Aentho Team</div>
+            <div class="founder-role">Building tools for businesses that deserve better</div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <a href="#waiting-list" class="btn-primary">Join Our Early Access List →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="nav-logo" style="margin-bottom:0">
+          <div class="nav-logo-mark">A</div>
+          Aentho
+        </a>
+        <p class="footer-tagline">Helping businesses understand their growth. Simple tools for real people running real businesses.</p>
+      </div>
+      <div>
+        <div class="footer-links">
+          <h4>Navigate</h4>
+          <a href="#home">Home</a>
+          <a href="#features">Features</a>
+          <a href="#customer-stories">Customer Stories</a>
+          <a href="#waiting-list">Waiting List</a>
+          <a href="#about">About</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-links">
+          <h4>Product</h4>
+          <a href="#features">How it works</a>
+          <a href="#waiting-list">Early Access</a>
+          <a href="#about">Our story</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Aentho. All rights reserved.</span>
+      <span class="footer-copy" style="color:var(--muted)">Built with care for small businesses 🤝</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════ -->
+<script>
+// ─── NAVBAR SCROLL ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+});
+
+// ─── MOBILE MENU ───
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ─── SCROLL REVEAL ───
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ═══════════════════════════════════════════════════════════════════════════
+// GOOGLE FORMS — WAITING LIST SUBMISSION
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// ✅ ACTION URL — Already set. Do NOT change this line.
+//    This is your form's submission endpoint (viewform → formResponse).
+//
+const GOOGLE_FORM_ACTION_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfTIW8B7hg7-blZtjBvIupSwrpYRCHgjuJCTLzjQh82njIvUw/formResponse";
+
+// ─────────────────────────────────────────────────────────────────────────
+// ✏️  ENTRY IDs — YOU MUST FILL THESE IN:
+//
+//  How to find them (30 seconds):
+//  1. Open this URL in Chrome:
+//     https://docs.google.com/forms/d/e/1FAIpQLSfTIW8B7hg7-blZtjBvIupSwrpYRCHgjuJCTLzjQh82njIvUw/viewform
+//  2. Press Ctrl+U (Windows) or Cmd+U (Mac) to open Page Source
+//  3. Press Ctrl+F and search for:  entry.
+//  4. You will see exactly 3 results — copy each number and paste below.
+//
+//  Example of what you'll see in the source:
+//    name="entry.123456789"   ← Shop name field
+//    name="entry.987654321"   ← Gmail field
+//    name="entry.556677889"   ← Problems field
+// ─────────────────────────────────────────────────────────────────────────
+
+// ↓↓↓ REPLACE these 3 values with the real entry IDs from your form source ↓↓↓
+
+const ENTRY_SHOPNAME  = "entry.SHOPNAME_ENTRY_ID";   // ← Field 1: "Shop name"
+const ENTRY_GMAIL     = "entry.GMAIL_ENTRY_ID";      // ← Field 2: "Gmail"
+const ENTRY_PROBLEMS  = "entry.PROBLEMS_ENTRY_ID";   // ← Field 3: "What problems..."
+
+// ↑↑↑ That's all you need to change. Save the file and you're live. ↑↑↑
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function submitForm(e) {
+  e.preventDefault();
+
+  const btn      = document.getElementById('submitBtn');
+  const shopname = document.getElementById('f-shopname').value.trim();
+  const gmail    = document.getElementById('f-gmail').value.trim();
+  const problems = document.getElementById('f-problems').value.trim();
+
+  // Basic validation
+  if (!shopname || !gmail || !problems) {
+    alert('Please fill in all fields before submitting.');
+    return;
+  }
+
+  // Loading state
+  btn.disabled    = true;
+  btn.textContent = '⏳ Submitting...';
+
+  // Build FormData with the exact field names Google Forms expects
+  const formData = new FormData();
+  formData.append(ENTRY_SHOPNAME, shopname);
+  formData.append(ENTRY_GMAIL,    gmail);
+  formData.append(ENTRY_PROBLEMS, problems);
+
+  try {
+    // NOTE: Google Forms requires no-cors mode — this is correct and intentional.
+    // The browser will block reading the response (CORS policy), but the data
+    // IS successfully written to your Google Sheet. This is the standard method
+    // used by all Google Forms integrations on external websites.
+    await fetch(GOOGLE_FORM_ACTION_URL, {
+      method : 'POST',
+      mode   : 'no-cors',   // ← Required. Do not change.
+      body   : formData,
+    });
+  } catch (err) {
+    // fetch with no-cors always throws a TypeError on some browsers
+    // even when the submission succeeds — we ignore it and show success.
+    console.log('Google Forms no-cors response (expected):', err.message);
+  }
+
+  // Always show success after sending — no-cors means we cannot
+  // read the response status, but if the entry IDs are correct the
+  // data will appear in your Google Sheet within seconds.
+  showSuccess();
+}
+
+function showSuccess() {
+  document.getElementById('waitingListForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display    = 'block';
+  document.getElementById('waiting-list').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
